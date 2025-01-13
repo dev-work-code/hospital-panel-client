@@ -110,7 +110,7 @@ const CreateBillButton: React.FC = () => {
     }
   };
   const handleViewInvoiceClick = () => {
-    navigate("/viewInvoices");
+    navigate("/invoices");
   };
 
   // Check if the phone number is valid

@@ -22,6 +22,8 @@ import AddRoles from "@/pages/Add-Roles";
 import RoleProfile from "@/components/internal/Role/RoleProfile";
 import LiveCaseProfilePage from "@/pages/Live-case-Profile";
 import CreateBill from "@/pages/CreateBill";
+import Invocies from "@/components/internal/Accounts/Invocies";
+import InvoiceDetails from "@/components/internal/Accounts/InvoiceDetails";
 
 export default function AppRouter() {
   const privateRoutes = [
@@ -70,6 +72,14 @@ export default function AppRouter() {
         {
           path: "/accounts",
           element: <Account />,
+        },
+        {
+          path: "/invoices",
+          element: <Invocies />,
+        },
+        {
+          path: "/invoice/:invoiceId",
+          element: <InvoiceDetails />,
         },
         {
           path: "/createBillPage",
