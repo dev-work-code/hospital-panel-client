@@ -1,29 +1,31 @@
-import HomeLayout from "@/components/layout/HomeLayout";
-import Home from "@/pages/Home";
-import Doctor from "@/pages/Doctor";
-import NotFound from "@/pages/NotFound";
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
-import AppointmentsPage from "@/pages/AppointmentsPage";
-import PatientsPage from "@/pages/PatientsPage";
-import Profile from "@/pages/Profile";
-import Account from "@/pages/Account";
-import Role from "@/pages/Role";
-import Dashboard from "@/pages/Dashboard";
-import LoginScreen from "@/components/internal/Auth/Login/login/loginScreen";
-import OTPComponent from "@/components/internal/Auth/Login/otp/otpScreen";
-import RegisterScreen from "@/components/internal/Auth/Register/RegisterScreen";
-import DoctorDetail from "@/pages/DoctorDetail";
-import LiveCases from "@/pages/LiveCases";
-import ProfileScreen from "@/components/internal/Doctor/AddDoctor/PorfileScreen/profileScreen";
-import AddAppointments from "@/pages/Add-Appointments";
-import PatientProfilePage from "@/pages/PatientProfile";
-import AddRoles from "@/pages/Add-Roles";
-import RoleProfile from "@/components/internal/Role/RoleProfile";
-import LiveCaseProfilePage from "@/pages/Live-case-Profile";
-import CreateBill from "@/pages/CreateBill";
-import Invocies from "@/components/internal/Accounts/Invocies";
-import InvoiceDetails from "@/components/internal/Accounts/InvoiceDetails";
+import HomeLayout from "@/components/layout/HomeLayout";
+import { ProtectedRoute } from "./ProtectedRoute";
+
+// Lazy-loaded components
+const Doctor = lazy(() => import("@/pages/Doctor"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
+const AppointmentsPage = lazy(() => import("@/pages/AppointmentsPage"));
+const PatientsPage = lazy(() => import("@/pages/PatientsPage"));
+const Profile = lazy(() => import("@/pages/Profile"));
+const Account = lazy(() => import("@/pages/Account"));
+const Role = lazy(() => import("@/pages/Role"));
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const LoginScreen = lazy(() => import("@/components/internal/Auth/Login/login/loginScreen"));
+const OTPComponent = lazy(() => import("@/components/internal/Auth/Login/otp/otpScreen"));
+const RegisterScreen = lazy(() => import("@/components/internal/Auth/Register/RegisterScreen"));
+const DoctorDetail = lazy(() => import("@/pages/DoctorDetail"));
+const LiveCases = lazy(() => import("@/pages/LiveCases"));
+const ProfileScreen = lazy(() => import("@/components/internal/Doctor/AddDoctor/PorfileScreen/profileScreen"));
+const AddAppointments = lazy(() => import("@/pages/Add-Appointments"));
+const PatientProfilePage = lazy(() => import("@/pages/PatientProfile"));
+const AddRoles = lazy(() => import("@/pages/Add-Roles"));
+const RoleProfile = lazy(() => import("@/components/internal/Role/RoleProfile"));
+const LiveCaseProfilePage = lazy(() => import("@/pages/Live-case-Profile"));
+const CreateBill = lazy(() => import("@/pages/CreateBill"));
+const Invoices = lazy(() => import("@/components/internal/Accounts/Invocies"));
+const InvoiceDetails = lazy(() => import("@/components/internal/Accounts/InvoiceDetails"));
 
 export default function AppRouter() {
   const privateRoutes = [
@@ -31,89 +33,88 @@ export default function AppRouter() {
       path: "/",
       element: (
         <HomeLayout>
-          <Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
             <Outlet />
           </Suspense>
         </HomeLayout>
       ),
       children: [
         {
-          element: <Home />,
+          element: <ProtectedRoute element={<Dashboard />} />,
           index: true,
         },
         {
           path: "/doctor",
-          element: <Doctor />,
+          element: <ProtectedRoute element={<Doctor />} />,
         },
         {
           path: "/doctor/:doctorId",
-          element: <DoctorDetail />,
+          element: <ProtectedRoute element={<DoctorDetail />} />,
         },
         {
           path: "/appointments",
-          element: <AppointmentsPage />,
+          element: <ProtectedRoute element={<AppointmentsPage />} />,
         },
         {
           path: "/patients",
-          element: <PatientsPage />,
+          element: <ProtectedRoute element={<PatientsPage />} />,
         },
         {
           path: "/patient/:patientId",
-          element: <PatientProfilePage />,
+          element: <ProtectedRoute element={<PatientProfilePage />} />,
         },
         {
           path: "/add-patients",
-          element: <AddAppointments />,
+          element: <ProtectedRoute element={<AddAppointments />} />,
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: <ProtectedRoute element={<Profile />} />,
         },
         {
           path: "/accounts",
-          element: <Account />,
+          element: <ProtectedRoute element={<Account />} />,
         },
         {
           path: "/invoices",
-          element: <Invocies />,
+          element: <ProtectedRoute element={<Invoices />} />,
         },
         {
           path: "/invoice/:invoiceId",
-          element: <InvoiceDetails />,
+          element: <ProtectedRoute element={<InvoiceDetails />} />,
         },
         {
           path: "/createBillPage",
-          element: <CreateBill />,
+          element: <ProtectedRoute element={<CreateBill />} />,
         },
         {
           path: "/role",
-          element: <Role />,
+          element: <ProtectedRoute element={<Role />} />,
         },
         {
           path: "/add-role",
-          element: <AddRoles />,
+          element: <ProtectedRoute element={<AddRoles />} />,
         },
         {
           path: "/role/:roleId",
-          element: <RoleProfile />,
+          element: <ProtectedRoute element={<RoleProfile />} />,
         },
         {
           path: "/dashboard",
-          element: <Dashboard />,
+          element: <ProtectedRoute element={<Dashboard />} />,
         },
         {
           path: "/livecases",
-          element: <LiveCases />,
+          element: <ProtectedRoute element={<LiveCases />} />,
         },
         {
           path: "/hospital-case-profile",
-          element: <LiveCaseProfilePage />,
+          element: <ProtectedRoute element={<LiveCaseProfilePage />} />,
         },
         {
           path: "/doctor/add",
-          element: <ProfileScreen />,
+          element: <ProtectedRoute element={<ProfileScreen />} />,
         },
-
       ],
     },
   ];
@@ -121,19 +122,51 @@ export default function AppRouter() {
   const publicRoutes = [
     {
       path: "/404",
-      element: <NotFound />,
+      element: <Suspense fallback={<div>Loading...</div>}>
+        <NotFound />
+      </Suspense>,
     },
     {
       path: "/register",
-      element: <RegisterScreen />,
+      element: (
+        <ProtectedRoute
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <RegisterScreen />
+            </Suspense>
+          }
+          isPublic
+          alreadyLoggedInRedirect="/dashboard"
+        />
+      ),
     },
     {
       path: "/login",
-      element: <LoginScreen />,
+      element: (
+        <ProtectedRoute
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <LoginScreen />
+            </Suspense>
+          }
+          isPublic
+          alreadyLoggedInRedirect="/dashboard"
+        />
+      ),
     },
     {
       path: "/login/otp",
-      element: <OTPComponent />,
+      element: (
+        <ProtectedRoute
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <OTPComponent />
+            </Suspense>
+          }
+          isPublic
+          alreadyLoggedInRedirect="/dashboard"
+        />
+      ),
     },
     {
       path: "*",
