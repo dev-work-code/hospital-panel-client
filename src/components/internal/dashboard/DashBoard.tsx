@@ -1,120 +1,150 @@
 import React, { useEffect, useState } from "react";
 import api from "@/utils/api";
+import Overview from "./Overview";
+import MonthlyRevenue from "./MonthlyRevenue";
+import Departments from "./Departments";
+import SkeletonLoader from "@/pages/common/SkeletionLoader";
+import AppointmentsTable from "./UpcomingBooking";
 
-type Overview = {
-    totalPatients: number;
-    admissionRate: string;
-    ongoingCases: number;
+type OverviewData = {
+  totalPatients: number;
+  admissionRate: string;
+  ongoingCases: number;
 };
 
 type Revenue = {
-    monthly: { date: string; amount: number }[];
+  monthly: { month: string; revenue: number }[];
 };
 
 type Department = {
-    name: string;
-    doctorCount: number;
-    id: string;
+  name: string;
+  patientCount: number;
+  id: string;
 };
 
 type DashboardData = {
-    overview: Overview;
-    revenue: Revenue;
-    departments: Department[];
+  overview: OverviewData;
+  revenue: Revenue;
+  departments: Department[];
 };
 
 const Dashboard: React.FC = () => {
-    const [data, setData] = useState<DashboardData | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [todayData, setTodayData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [view, setView] = useState<'overall' | 'today'>('overall');
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await api.get("/hospital/dashboard");
-                if (response.data.success) {
-                    setData(response.data.data);
-                } else {
-                    throw new Error("Data retrieval unsuccessful");
-                }
-            } catch (err: unknown) {
-                if (err instanceof Error) {
-                    setError(err.message);
-                } else {
-                    setError("An unknown error occurred");
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
+  const getTodayDate = (): string => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
-        fetchData();
-    }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // Fetching overall stats
+        const overallResponse = await api.get("/hospital/dashboard");
+        if (overallResponse.data.success) {
+          setData(overallResponse.data.data);
+        } else {
+          throw new Error("Data retrieval unsuccessful");
+        }
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (loading) {
-        return <div className="text-center py-8 text-lg text-blue-500">Loading...</div>;
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (view === 'today') {
+      const fetchTodayData = async () => {
+        setLoading(true);
+        try {
+          const todayDate = getTodayDate();
+          // Fetching today's stats
+          const todayResponse = await api.get(`/hospital/dashboard/getStatsforDate?date=${todayDate}`);
+          if (todayResponse.data.success) {
+            setTodayData(todayResponse.data.data);
+          } else {
+            throw new Error("Today's data retrieval unsuccessful");
+          }
+        } catch (err: unknown) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError("An unknown error occurred");
+          }
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchTodayData();
     }
+  }, [view]);
 
-    if (error) {
-        return <div className="text-center py-8 text-lg text-red-500">Error: {error}</div>;
-    }
+  if (loading) {
+    return <SkeletonLoader fullPage className="rounded-3xl" />;
+  }
 
-    return (
-        <div className="p-8 bg-gray-100 min-h-screen">
-            <h1 className="text-3xl font-bold text-center mb-8">Hospital Dashboard</h1>
+  if (error) {
+    return <div className="text-center py-8 text-lg text-red-500">Error: {error}</div>;
+  }
 
-            {/* Overview Section */}
-            <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-                <h2 className="text-2xl font-semibold mb-4">Overview</h2>
-                <div className="flex justify-between">
-                    <div className="text-center">
-                        <p className="text-lg font-medium">Total Patients</p>
-                        <p className="text-xl font-bold">{data?.overview.totalPatients}</p>
-                    </div>
-                    <div className="text-center">
-                        <p className="text-lg font-medium">Admission Rate</p>
-                        <p className="text-xl font-bold">{data?.overview.admissionRate}%</p>
-                    </div>
-                    <div className="text-center">
-                        <p className="text-lg font-medium">Ongoing Cases</p>
-                        <p className="text-xl font-bold">{data?.overview.ongoingCases}</p>
-                    </div>
-                </div>
-            </div>
+  const statsData = view === 'today' ? todayData : data;
 
-            {/* Revenue Section */}
-            <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-                <h2 className="text-2xl font-semibold mb-4">Monthly Revenue</h2>
-                <ul>
-                    {data?.revenue.monthly.map((entry, index) => (
-                        <li
-                            key={index}
-                            className="flex justify-between border-b py-2 text-gray-700"
-                        >
-                            <span>{new Date(entry.date).toLocaleDateString()}</span>
-                            <span className="font-bold">${entry.amount}</span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            {/* Departments Section */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-                <h2 className="text-2xl font-semibold mb-4">Departments</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {data?.departments.map((department) => (
-                        <div
-                            key={department.id}
-                            className="p-4 bg-gray-50 border rounded-lg shadow-sm"
-                        >
-                            <h3 className="text-xl font-bold mb-2">{department.name}</h3>
-                            <p className="text-gray-600">Doctors: {department.doctorCount}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
+  return (
+    <div className="p-6">
+      {/* Buttons for Stats View */}
+      <div className="flex justify-end">
+        <div className="flex items-center justify-center gap-4 mr-9 bg-[#E9F4FF] w-[345px] py-2 rounded-xl">
+          <button
+            onClick={() => setView('overall')}
+            className={`px-4 py-2 rounded-xl font-semibold text-sm w-40 ${view === 'overall' ? 'bg-[#013DC0] text-white' : 'text-[#013DC0]'
+              }`}
+          >
+            Overall Statistics
+          </button>
+          <button
+            onClick={() => setView('today')}
+            className={`px-4 py-2 rounded-xl w-40 font-semibold text-sm ${view === 'today' ? 'bg-[#013DC0] text-white' : 'text-[#013DC0]'
+              }`}
+          >
+            Todays Statistics
+          </button>
         </div>
-    );
+      </div>
+      {/* Overview Section */}
+      <Overview
+        totalPatients={statsData?.overview.totalPatients || 0}
+        admissionRate={statsData?.overview.admissionRate || "0.00"}
+        ongoingCases={statsData?.overview.ongoingCases || 0}
+      />
+
+      {/* Flex Row: Monthly Revenue and Departments */}
+      <div className="flex flex-row justify-between p-4">
+        <MonthlyRevenue monthly={statsData?.revenue.monthly || []} />
+        <Departments departments={statsData?.departments || []} />
+      </div>
+
+      <div className="p-4">
+        <AppointmentsTable />
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;
