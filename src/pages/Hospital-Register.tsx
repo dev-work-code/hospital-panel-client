@@ -1,4 +1,4 @@
-import HospitalForm from "@/components/internal/AuthComponent/Register/hospitalRegister"
+import HospitalForm from "@/components/internal/Auth/Register/hospitalRegister"
 
 const HospitalRegister = () => {
   return (
