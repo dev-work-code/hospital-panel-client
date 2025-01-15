@@ -6,15 +6,13 @@ import {
   AlertDialog,
   AlertDialogTrigger,
   AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogFooter,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { AxiosError } from "axios";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import InvoiceImg from "@/assets/InvoiceImg.svg"
+import { Label } from "@/components/ui/label";
+import { X } from "lucide-react";
 
 const CreateBillButton: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -118,6 +116,7 @@ const CreateBillButton: React.FC = () => {
   return (
     <>
       <div className="flex items-center justify-between w-full p-4">
+
         <h1 className="text-xl  text-[#013DC0] font-medium -mt-[60px] ">Account</h1>
         <div className="flex flex-col items-end space-y-4">
           {/* Create Bill Button */}
@@ -132,35 +131,36 @@ const CreateBillButton: React.FC = () => {
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-[#E9F4FF] rounded-3xl h-64">
-              <AlertDialogHeader>
-                <AlertDialogTitle className="flex flex-row items-center justify-center">Enter Patient Phone number to create the Bill</AlertDialogTitle>
-              </AlertDialogHeader>
-              <div className="mb-4">
-                <Input
-                  type="text"
-                  className="bg-white py-6"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="Enter phone number"
-                />
-                {error && <p className="text-red-500 text-sm ml-2 mt-1">{error}</p>}
-              </div>
-              <AlertDialogFooter>
-                <Button
-                  variant="destructive"
-                  className="px-4 py-5 w-52 rounded mr-2"
+              <div className="absolute top-1 right-2">
+                <span
+                  className="rounded-full mr-2 cursor-pointer"
                   onClick={() => setIsDialogOpen(false)}
                 >
-                  Cancel
-                </Button>
+                  <X className="text-red-500" size={28} />
+                </span>
+              </div>
+              <div className="relative mt-4">
+                <Label className="flex flex-row  font-semi-bold leading-relaxed ml-2 mb-2">Enter Patient Phone number to create the Bill</Label>
+                <div className="mt-1 flex items-center">
+                  <span className="absolute left-3 text-black font-bold text-lg">+91</span>
+                  <input
+                    type="text"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="bg-white pl-20 py-3 font-bold text-xl rounded-xl w-full"
+                  />
+                </div>
+                {error && <p className="text-red-500 text-sm ml-2 mt-1">{error}</p>}
+              </div>
+              <div className="flex items-center justify-center">
                 <AlertDialogAction
-                  className="px-4 py-5 font-bold text-base w-52 bg-[#013DC0] text-white rounded hover:bg-[#013DC0]"
+                  className="px-4 py-6 font-bold text-base w-full rounded-xl bg-[#013DC0] text-white hover:bg-[#013DC0]"
                   onClick={handleNextClick}
                   disabled={loading || !isPhoneNumberValid} // Disable button if phone number is invalid
                 >
                   {loading ? "Loading..." : "Next"}
                 </AlertDialogAction>
-              </AlertDialogFooter>
+              </div>
             </AlertDialogContent>
           </AlertDialog>
           <Button

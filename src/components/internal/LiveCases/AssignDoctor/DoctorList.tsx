@@ -64,24 +64,23 @@ const DoctorList: React.FC<DoctorListProps> = ({
                                     <img
                                         src={doctor.doctorPhoto}
                                         alt={`${doctor.doctorName} photo`}
-                                        className="w-16 h-16 object-cover rounded-full mr-4"
+                                        className="w-20 h-20 object-cover rounded-full mr-4"
                                     />
-                                    <div className="flex flex-col flex-grow">
+                                    <div className="flex flex-col items-center justify-center">
                                         <p className="font-medium text-sm">{doctor.doctorName}</p>
                                         <p className="text-sm">
                                             Experience: {doctor.experience}
                                         </p>
-                                    </div>
-                                    <div>
                                         <Button
                                             variant="primary"
-                                            className="bg-white text-[#013DC0]  border border-[#013DC0] py-2 px-6 w-40 mt-4"
+                                            className="bg-white text-[#013DC0]  border border-[#013DC0] py-2 px-6 w-40 mt-2"
                                         >
                                             {selectedDoctor?.doctorId === doctor.doctorId
                                                 ? 'Deselect'
                                                 : 'Select'}
                                         </Button>
                                     </div>
+
                                 </div>
                             </Card>
                         ))}

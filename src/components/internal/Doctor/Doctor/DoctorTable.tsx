@@ -208,7 +208,7 @@ const DoctorsTable: React.FC = () => {
       {/* Department Popup */}
       {departmentPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg max-w-xl p-6">
+          <div className="bg-white rounded-3xl max-w-xl p-6">
             <h2 className="text-xl font-medium mb-4">Select Departments</h2>
             <div className="flex items-center border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-[5px_5px_20px_0px_#61ABEB33] w-[475px] h-[48px]">
               <input

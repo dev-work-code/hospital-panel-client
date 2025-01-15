@@ -148,7 +148,7 @@ const DoctorRegistrationForm: React.FC = () => {
                 <Phone className="absolute left-3 text-gray-400" />
                 <Input
                   type="tel"
-                  {...register('phoneNumber', { value: '+91' })}
+                  {...register('phoneNumber',)}
                   className="bg-[#E9F4FF] pl-10 py-3"
                 />
               </div>
@@ -229,7 +229,7 @@ const DoctorRegistrationForm: React.FC = () => {
           variant="primary"
           className="w-96 h-12"
         >
-          Submit
+          Add Patient
         </Button>
       </CardFooter>
     </div>

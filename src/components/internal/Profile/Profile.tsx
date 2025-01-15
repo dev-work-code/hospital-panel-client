@@ -25,6 +25,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import SkeletonLoader from "@/pages/common/SkeletionLoader";
 
 interface ProfileData {
   hospitalName: string;
@@ -160,7 +161,7 @@ const Profile: React.FC = () => {
     navigate("/login"); // Navigate to the login page
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <SkeletonLoader fullPage />;
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (

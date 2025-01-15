@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Search, Calendar as CalendarIcon } from 'lucide-react';
+import { Search, Calendar as  CalendarDays } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 type Appointment = {
@@ -151,12 +151,12 @@ const Appointments: React.FC = () => {
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="primary" className="flex items-center gap-2 px-4 py-2">
-                  <CalendarIcon className="h-5 w-5" />
+                  <CalendarDays className="h-5 w-5" />
                   {selectedDate ? selectedDate.toLocaleDateString('en-US') : ""}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="end">
-                <Card className="p-2">
+              <PopoverContent className="w-auto p-0 border-none mt-4" align="end">
+                <Card className='border-none shadow-none'>
                   <Calendar
                     mode="single"
                     selected={selectedDate || undefined}

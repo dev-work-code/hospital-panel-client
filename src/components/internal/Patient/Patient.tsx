@@ -14,6 +14,7 @@ import { EllipsisVertical } from "lucide-react";
 import PaginationComponent from "./PaginationComponent";
 import SkeletonLoader from "@/pages/common/SkeletionLoader";
 import { Card, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface Doctor {
   doctorName: string;
@@ -31,6 +32,7 @@ interface Patient {
   patientBloodGroup: string;
   patientAppointmentType: string;
   doctor: Doctor;
+  patientAppointmentStatus: string;
 }
 
 const HospitalPatients: React.FC = () => {
@@ -125,9 +127,9 @@ const HospitalPatients: React.FC = () => {
               <TableHead className="w-1/7 text-left">Email</TableHead>
               <TableHead className="w-1/7 text-left">Mobile No.</TableHead>
               <TableHead className="w-1/7 text-left">Gender</TableHead>
-              <TableHead className="w-1/7 text-left">Blood Group</TableHead>
               <TableHead className="w-1/7 text-left">Appointment Type</TableHead>
-              <TableHead className="w-1/7 text-left">Doctor</TableHead>
+              <TableHead className="w-1/7 text-left">Status</TableHead>
+
               <TableHead className="w-1/7"></TableHead>
             </TableRow>
           </TableHeader>
@@ -139,9 +141,22 @@ const HospitalPatients: React.FC = () => {
                 <TableCell className="w-1/7">{patient.patientEmail}</TableCell>
                 <TableCell className="w-1/7">{patient.patientPhoneNumber}</TableCell>
                 <TableCell className="w-1/7">{patient.patientGender}</TableCell>
-                <TableCell className="w-1/7">{patient.patientBloodGroup}</TableCell>
                 <TableCell className="w-1/7">{patient.patientAppointmentType}</TableCell>
-                <TableCell className="w-1/7">{patient.doctor.doctorName}</TableCell>
+                <TableCell className="w-1/7">
+                  <Badge
+                    variant="primary"
+                    className={`${patient.patientAppointmentStatus === "COMPLETED"
+                      ? "bg-[#F1F1F1] text-[#7E7E7E]"
+                      : patient.patientAppointmentStatus === "PENDING"
+                        ? "bg-[#FEECEB] text-[#F36960]"
+                        : patient.patientAppointmentStatus === "UPCOMING"
+                          ? "bg-[#E7F8F0] text-[#41C588]"
+                          : ""
+                      }`}
+                  >
+                    {patient.patientAppointmentStatus}
+                  </Badge>
+                </TableCell>
                 <TableCell className="w-1/7">
                   <DropdownMenu>
                     <DropdownMenuTrigger>
