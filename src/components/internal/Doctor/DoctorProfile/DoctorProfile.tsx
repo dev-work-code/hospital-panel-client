@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Card, CardDescription, CardHeader } from '@/components/ui/card';
-import { Search } from 'lucide-react';
+import { Card, CardHeader } from '@/components/ui/card';
+import { Search, Star } from 'lucide-react';
 
 type Appointment = {
     type: "appointment";
@@ -31,6 +31,9 @@ type Patient = {
 type CombinedData = Appointment | Patient;
 
 interface Doctor {
+    doctorExperience: string;
+    doctorSpecialization: string;
+    doctorRating: string;
     doctorId: string;
     doctorName: string;
     doctorEmail: string | null;
@@ -97,24 +100,32 @@ const DoctorDetail: React.FC = () => {
             {/* Doctor Profile */}
             <CardHeader className="text-2xl text-[#013DC0] font-medium mb-4">Doctor Profile</CardHeader>
             <Card className="w-full md:w-96 shadow-md mb-8 p-4">
-                <div className="flex items-center gap-4">
-                    <img
-                        src={doctor?.doctorPhoto}
-                        alt={doctor?.doctorName}
-                        className="w-24 h-24 rounded-full"
-                    />
-                    <CardDescription>
-                        <h1 className="text-xl font-semibold">{doctor?.doctorName}</h1>
-                        <p className="text-sm">
-                            <strong>Email:</strong> {doctor?.doctorEmail || 'N/A'}
+                <div className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                        <img
+                            src={doctor.doctorPhoto}
+                            alt={`${doctor.doctorName}'s photo`}
+                            className="w-24 h-24 rounded-full object-fit"
+                        />
+
+                        <p
+                            className="-mt-1 text-sm text-gray-600 flex items-center justify-center gap-1 bg-[#DEF1FF] p-1 px-2 rounded-md"
+                            aria-label={`Doctor rating: ${doctor.doctorRating} stars`}
+                        >
+                            <Star
+                                size={16}
+                                className="text-[#013DC0]"
+                                fill="#013DC0" // Set the inside color
+                                stroke="#013DC0" // Ensure the border matches
+                            />
+                            <span className="text-[#013DC0] text-xs">{doctor.doctorRating}</span>
                         </p>
-                        <p className="text-sm">
-                            <strong>Mobile:</strong> {doctor?.doctorMobileNumber}
-                        </p>
-                        <p className="text-sm">
-                            <strong>Gender:</strong> {doctor?.doctorGender || 'N/A'}
-                        </p>
-                    </CardDescription>
+                    </div>
+                    <div className='mt-2'>
+                        <p className="font-medium text-lg">{doctor.doctorName}</p>
+                        <p className="text-base font-normal"> Specialist in <p>{doctor.doctorSpecialization}</p> </p>
+                        <p className="text-sm text-[#838993] font-normal mt-4">{doctor.doctorExperience} experience overall</p>
+                    </div>
                 </div>
             </Card>
 

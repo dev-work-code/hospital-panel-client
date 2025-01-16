@@ -25,7 +25,7 @@ const RoleProfile = lazy(() => import("@/components/internal/Role/RoleProfile"))
 const LiveCaseProfilePage = lazy(() => import("@/pages/Live-case-Profile"));
 const CreateBill = lazy(() => import("@/pages/CreateBill"));
 const Invoices = lazy(() => import("@/components/internal/Accounts/Invocies"));
-const InvoiceDetails = lazy(() => import("@/components/internal/Accounts/InvoiceDetails"));
+const InvoiceDetails = lazy(() => import("@/components/internal/Accounts/invoiceDetails/InvoiceDetails"));
 
 export default function AppRouter() {
   const privateRoutes = [
