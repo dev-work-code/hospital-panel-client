@@ -45,7 +45,7 @@ const LogoInput: React.FC<LogoInputProps> = ({ id, register, error, label }) => 
   return (
     <div className=" mb-4">
       {label && (
-        <Label htmlFor={id} className="block mb-1">
+        <Label htmlFor={id} className="block mb-1 font-normal text-sm ml-1">
           {label}
         </Label>
       )}
@@ -57,7 +57,7 @@ const LogoInput: React.FC<LogoInputProps> = ({ id, register, error, label }) => 
           {...register}
           onChange={handleChange}
           accept="image/*"
-          className="border border-gray-300 p-2 rounded-lg bg-[#E9F4FF] " // Customize styles as needed
+          className="border-none p-2 rounded-lg bg-[#E9F4FF] text-sm font-normal " // Customize styles as needed
         />
       </div>
       {error && <span className="text-red-500 text-xs">{error.message}</span>}

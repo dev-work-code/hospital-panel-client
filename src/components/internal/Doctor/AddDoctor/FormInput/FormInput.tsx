@@ -16,7 +16,7 @@ interface FormInputProps {
 const FormInput: React.FC<FormInputProps> = ({ id, label, type, register, error, placeholder }) => {
   return (
     <div className="mb-4">
-      <Label htmlFor={id} className="block mb-1">
+      <Label htmlFor={id} className="block mb-1 font-normal text-sm ml-1">
         {label}
       </Label>
       <Input
@@ -24,7 +24,7 @@ const FormInput: React.FC<FormInputProps> = ({ id, label, type, register, error,
         type={type}
         {...register}
         placeholder={placeholder}
-        className="border border-gray-300 p-2 rounded-lg bg-[#E9F4FF] " // Customize styles as needed
+        className="border-none  p-2 rounded-lg bg-[#E9F4FF] " // Customize styles as needed
         aria-invalid={!!error}
       />
       {error && <FormError message={error.message} />}

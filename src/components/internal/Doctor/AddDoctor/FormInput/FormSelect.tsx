@@ -14,13 +14,13 @@ interface FormSelectProps {
 const FormSelect: React.FC<FormSelectProps> = ({ id, label, options, register, error }) => {
   return (
     <div className="mb-4">
-      <Label htmlFor={id} className="block mb-1">
+      <Label htmlFor={id} className="block mb-1 font-normal text-sm ml-1">
         {label}
       </Label>
       <select
         id={id}
         {...register(id, { required: `${label} is required` })}  // Correct way to use register
-        className="border border-gray-300 p-2 rounded-lg bg-[#E9F4FF] w-full"
+        className="border-none font-normal text-sm  p-2.5 rounded-lg bg-[#E9F4FF] w-full"
         aria-invalid={!!error}
       >
         <option value="">Select {label}</option>

@@ -26,7 +26,7 @@ const GenderRadioButton: React.FC<GenderRadioButtonProps> = ({
   return (
     <div className="mb-4">
       <label htmlFor={id} className="block mb-1">
-        {label} <span className="text-red-500 mt-2">*</span>
+        {label}
       </label>
       <RadioGroup
         {...field}

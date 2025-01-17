@@ -1,12 +1,12 @@
+import { Card, CardHeader } from "@/components/ui/card";
 import OrganizationForm from "../ProfileForm/ProfileDataForm";
 
 function OTPComponent() {
   return (
-    <div className="border border-[#D2E2F3] rounded-[38px] p-4">
-      <h2 className="text-2xl font-semibold mt-4 ml-36 text-[#013DC0]">Add Doctor</h2> {/* Add your text here */}
+    <Card className="border border-[#D2E2F3] rounded-[38px] p-4">
+      <CardHeader className="text-2xl font-semibold mt-4  text-[#013DC0] text-start">Add Doctor</CardHeader> {/* Add your text here */}
       <OrganizationForm />
-    </div>
+    </Card>
   );
 }
-
 export default OTPComponent;
